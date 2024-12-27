@@ -55,9 +55,10 @@ go run cmd/calc_service/main.go
  1. Успешный расчет (HTTP 200):
 Выполните следующий запрос для получения результата вычисления:
 
-curl --location 'http://localhost:8080/api/v1/calculate' \
-     --header 'Content-Type: application/json' \
-     --data '{"expression": "3+5*2"}'
+curl -X POST http://localhost:8080/api/v1/calculate \
+     -H "Content-Type: application/json" \
+     -d '{"expression": "3+5*2"}'
+
 
 Ответ:
 
@@ -69,23 +70,23 @@ curl --location 'http://localhost:8080/api/v1/calculate' \
  2. Некорректное выражение (HTTP 422):
 Для запроса с ошибкой синтаксиса:
 
-curl --location 'http://localhost:8080/api/v1/calculate' \
-     --header 'Content-Type: application/json' \
-     --data '{"expression": "3+5*2"}'
+curl -X POST http://localhost:8080/api/v1/calculate \
+     -H "Content-Type: application/json" \
+     -d '{"expression": ""}'
 
 Ответ:
 
 {
-  "error": "Invalid expression"
-}
+"error":"Expression cannot be empty. Please provide a valid mathematical expression.
+"}
 
 
  3. Внутренняя ошибка сервера (HTTP 500):
 Для запроса, который вызывает внутреннюю ошибку сервера:
 
-curl --location 'http://localhost:8080/api/v1/calculate' \
-     --header 'Content-Type: application/json' \
-     --data '{"expression": "3+5*2"}'
+curl -X POST http://localhost:8080/api/v1/calculate \
+     -H "Content-Type: application/json" \
+     -d '{"expression": "Expression is not valid. Please check the syntax."}'
 
 Ответ:
 
